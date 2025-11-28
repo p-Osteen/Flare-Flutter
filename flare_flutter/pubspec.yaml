@@ -1,7 +1,7 @@
 name: flare_flutter
 description: Vector design and runtime animation for Flutter.
 version: 4.0.0
-homepage: https://github.com/2d-inc/Flare-Flutter
+homepage: https://github.com/p-Osteen/Flare-Flutter
 
 dependencies:
   collection: ^1.19.1
