@@ -15,11 +15,14 @@ class ActorTriangle extends ActorProceduralPath {
   List<PathPoint> get points {
     List<PathPoint> _trianglePoints = <PathPoint>[];
     _trianglePoints.add(
-        StraightPathPoint.fromTranslation(Vec2D.fromValues(0.0, -radiusY)));
+      StraightPathPoint.fromTranslation(Vec2D.fromValues(0.0, -radiusY)),
+    );
     _trianglePoints.add(
-        StraightPathPoint.fromTranslation(Vec2D.fromValues(radiusX, radiusY)));
+      StraightPathPoint.fromTranslation(Vec2D.fromValues(radiusX, radiusY)),
+    );
     _trianglePoints.add(
-        StraightPathPoint.fromTranslation(Vec2D.fromValues(-radiusX, radiusY)));
+      StraightPathPoint.fromTranslation(Vec2D.fromValues(-radiusX, radiusY)),
+    );
 
     return _trianglePoints;
   }
@@ -35,8 +38,12 @@ class ActorTriangle extends ActorProceduralPath {
     instance.copyPath(this, resetArtboard);
     return instance;
   }
+
   static ActorTriangle read(
-      ActorArtboard artboard, StreamReader reader, ActorTriangle component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorTriangle component,
+  ) {
     ActorNode.read(artboard, reader, component);
 
     component.width = reader.readFloat32('width');

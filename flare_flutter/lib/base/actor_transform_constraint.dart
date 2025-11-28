@@ -73,7 +73,9 @@ class ActorTransformConstraint extends ActorTargetedConstraint {
   }
 
   void copyTransformConstraint(
-      ActorTransformConstraint node, ActorArtboard resetArtboard) {
+    ActorTransformConstraint node,
+    ActorArtboard resetArtboard,
+  ) {
     copyTargetedConstraint(node, resetArtboard);
     _sourceSpace = node._sourceSpace;
     _destSpace = node._destSpace;
@@ -89,8 +91,11 @@ class ActorTransformConstraint extends ActorTargetedConstraint {
   @override
   void update(int dirt) {}
   // ignore: prefer_constructors_over_static_methods
-  static ActorTransformConstraint read(ActorArtboard artboard,
-      StreamReader reader, ActorTransformConstraint? component) {
+  static ActorTransformConstraint read(
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorTransformConstraint? component,
+  ) {
     // ignore: parameter_assignments
     component ??= ActorTransformConstraint();
     ActorTargetedConstraint.read(artboard, reader, component);

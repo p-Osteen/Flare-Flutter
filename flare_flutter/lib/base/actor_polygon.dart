@@ -21,8 +21,11 @@ class ActorPolygon extends ActorProceduralPath {
     double inc = (pi * 2.0) / sides;
 
     for (int i = 0; i < sides; i++) {
-      _polygonPoints.add(StraightPathPoint.fromTranslation(
-          Vec2D.fromValues(cos(angle) * radiusX, sin(angle) * radiusY)));
+      _polygonPoints.add(
+        StraightPathPoint.fromTranslation(
+          Vec2D.fromValues(cos(angle) * radiusX, sin(angle) * radiusY),
+        ),
+      );
       angle += inc;
     }
 
@@ -48,7 +51,10 @@ class ActorPolygon extends ActorProceduralPath {
   }
 
   static ActorPolygon read(
-      ActorArtboard artboard, StreamReader reader, ActorPolygon component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorPolygon component,
+  ) {
     ActorNode.read(artboard, reader, component);
 
     component.width = reader.readFloat32('width');

@@ -6,10 +6,10 @@ class TransformComponents {
   final Float32List _buffer;
 
   TransformComponents()
-      : _buffer = Float32List.fromList([1.0, 0.0, 0.0, 1.0, 0.0, 0.0]);
+    : _buffer = Float32List.fromList([1.0, 0.0, 0.0, 1.0, 0.0, 0.0]);
 
   TransformComponents.clone(TransformComponents copy)
-      : _buffer = Float32List.fromList(copy.values);
+    : _buffer = Float32List.fromList(copy.values);
 
   double get rotation {
     return _buffer[4];

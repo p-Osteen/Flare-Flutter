@@ -225,8 +225,10 @@ class ActorArtboard {
       }
     }
     // Copy dependency order.
-    _dependencyOrder =
-        List<ActorComponent?>.filled(artboard._dependencyOrder!.length, null);
+    _dependencyOrder = List<ActorComponent?>.filled(
+      artboard._dependencyOrder!.length,
+      null,
+    );
     for (final ActorComponent? component in artboard._dependencyOrder!) {
       final ActorComponent localComponent = _components[component!.idx]!;
       _dependencyOrder![component.graphOrder] = localComponent;
@@ -362,9 +364,11 @@ class ActorArtboard {
 
     // Guaranteed from the exporter to be in index order.
     _nodeCount = 1;
-    for (int componentIndex = 1, end = componentCount + 1;
-        componentIndex < end;
-        componentIndex++) {
+    for (
+      int componentIndex = 1, end = componentCount + 1;
+      componentIndex < end;
+      componentIndex++
+    ) {
       StreamReader? nodeBlock = block.readNextBlock(blockTypesMap);
       if (nodeBlock == null) {
         break;
@@ -431,8 +435,11 @@ class ActorArtboard {
           break;
 
         case BlockTypes.actorShape:
-          component =
-              ActorShape.read(this, nodeBlock, actor.makeShapeNode(null));
+          component = ActorShape.read(
+            this,
+            nodeBlock,
+            actor.makeShapeNode(null),
+          );
           break;
 
         case BlockTypes.actorPath:
@@ -444,28 +451,43 @@ class ActorArtboard {
           break;
 
         case BlockTypes.colorStroke:
-          component =
-              ColorStroke.read(this, nodeBlock, actor.makeColorStroke());
+          component = ColorStroke.read(
+            this,
+            nodeBlock,
+            actor.makeColorStroke(),
+          );
           break;
 
         case BlockTypes.gradientFill:
-          component =
-              GradientFill.read(this, nodeBlock, actor.makeGradientFill());
+          component = GradientFill.read(
+            this,
+            nodeBlock,
+            actor.makeGradientFill(),
+          );
           break;
 
         case BlockTypes.gradientStroke:
-          component =
-              GradientStroke.read(this, nodeBlock, actor.makeGradientStroke());
+          component = GradientStroke.read(
+            this,
+            nodeBlock,
+            actor.makeGradientStroke(),
+          );
           break;
 
         case BlockTypes.radialGradientFill:
-          component =
-              RadialGradientFill.read(this, nodeBlock, actor.makeRadialFill());
+          component = RadialGradientFill.read(
+            this,
+            nodeBlock,
+            actor.makeRadialFill(),
+          );
           break;
 
         case BlockTypes.radialGradientStroke:
           component = RadialGradientStroke.read(
-              this, nodeBlock, actor.makeRadialStroke());
+            this,
+            nodeBlock,
+            actor.makeRadialStroke(),
+          );
           break;
 
         case BlockTypes.actorEllipse:
@@ -473,8 +495,11 @@ class ActorArtboard {
           break;
 
         case BlockTypes.actorRectangle:
-          component =
-              ActorRectangle.read(this, nodeBlock, actor.makeRectangle());
+          component = ActorRectangle.read(
+            this,
+            nodeBlock,
+            actor.makeRectangle(),
+          );
           break;
 
         case BlockTypes.actorTriangle:
@@ -495,7 +520,10 @@ class ActorArtboard {
 
         case BlockTypes.actorLayerEffectRenderer:
           component = ActorDrawable.read(
-              this, nodeBlock, actor.makeLayerEffectRenderer());
+            this,
+            nodeBlock,
+            actor.makeLayerEffectRenderer(),
+          );
           break;
 
         case BlockTypes.actorMask:
@@ -511,8 +539,11 @@ class ActorArtboard {
           break;
 
         case BlockTypes.actorInnerShadow:
-          component =
-              ActorShadow.read(this, nodeBlock, actor.makeInnerShadow());
+          component = ActorShadow.read(
+            this,
+            nodeBlock,
+            actor.makeInnerShadow(),
+          );
           break;
         default:
           break;
@@ -553,8 +584,10 @@ class ActorArtboard {
     while ((animationBlock = block.readNextBlock(blockTypesMap)) != null) {
       switch (animationBlock!.blockType) {
         case BlockTypes.animation:
-          ActorAnimation anim =
-              ActorAnimation.read(animationBlock, _components);
+          ActorAnimation anim = ActorAnimation.read(
+            animationBlock,
+            _components,
+          );
           _animations.add(anim);
           break;
       }

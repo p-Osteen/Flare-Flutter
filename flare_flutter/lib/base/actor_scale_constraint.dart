@@ -47,8 +47,9 @@ class ActorScaleConstraint extends ActorAxisConstraint {
       Mat2D.decompose(transformB, _componentsB);
 
       if (!copyX) {
-        _componentsB[2] =
-            destSpace == TransformSpace.local ? 1.0 : _componentsA[2];
+        _componentsB[2] = destSpace == TransformSpace.local
+            ? 1.0
+            : _componentsA[2];
       } else {
         _componentsB[2] *= scaleX;
         if (offset) {
@@ -57,8 +58,9 @@ class ActorScaleConstraint extends ActorAxisConstraint {
       }
 
       if (!copyY) {
-        _componentsB[3] =
-            destSpace == TransformSpace.local ? 0.0 : _componentsA[3];
+        _componentsB[3] = destSpace == TransformSpace.local
+            ? 0.0
+            : _componentsA[3];
       } else {
         _componentsB[3] *= scaleY;
 
@@ -130,8 +132,11 @@ class ActorScaleConstraint extends ActorAxisConstraint {
   @override
   void update(int dirt) {}
   // ignore: prefer_constructors_over_static_methods
-  static ActorScaleConstraint read(ActorArtboard artboard, StreamReader reader,
-      ActorScaleConstraint? component) {
+  static ActorScaleConstraint read(
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorScaleConstraint? component,
+  ) {
     // ignore: parameter_assignments
     component ??= ActorScaleConstraint();
     ActorAxisConstraint.read(artboard, reader, component);

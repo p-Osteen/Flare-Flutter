@@ -34,7 +34,10 @@ class ActorRootBone extends ActorNode {
 
   // ignore: prefer_constructors_over_static_methods
   static ActorRootBone read(
-      ActorArtboard artboard, StreamReader reader, ActorRootBone? node) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorRootBone? node,
+  ) {
     // ignore: parameter_assignments
     node ??= ActorRootBone();
     ActorNode.read(artboard, reader, node);

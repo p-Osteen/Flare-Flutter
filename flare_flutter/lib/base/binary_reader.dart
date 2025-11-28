@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:flare_flutter/base/stream_reader.dart';
-import 'package:flutter/services.dart';
 
 /// Implementation of StreamReader that reads binary data.
 abstract class BinaryReader implements StreamReader {
@@ -109,7 +108,8 @@ abstract class BinaryReader implements StreamReader {
         int c2 = readUint8();
         int c3 = readUint8();
         int c4 = readUint8();
-        int u = ((c1 & 7) << 18 | (c2 & 63) << 12 | (c3 & 63) << 6 | c4 & 63) -
+        int u =
+            ((c1 & 7) << 18 | (c2 & 63) << 12 | (c3 & 63) << 6 | c4 & 63) -
             0x10000;
         stringBuffer.writeCharCode(0xD800 + (u >> 10));
         stringBuffer.writeCharCode(0xDC00 + (u & 1023));

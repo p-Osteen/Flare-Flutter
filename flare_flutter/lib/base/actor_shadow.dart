@@ -25,7 +25,10 @@ abstract class ActorShadow extends ActorBlur {
   }
 
   static ActorShadow read(
-      ActorArtboard artboard, StreamReader reader, ActorShadow component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorShadow component,
+  ) {
     ActorBlur.read(artboard, reader, component);
     component.offsetX = reader.readFloat32('offsetX');
     component.offsetY = reader.readFloat32('offsetY');

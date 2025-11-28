@@ -67,14 +67,20 @@ class ActorDistanceConstraint extends ActorTargetedConstraint {
     Vec2D.scale(toTarget, toTarget, _distance);
 
     Mat2D world = p.worldTransform;
-    Vec2D position = Vec2D.lerp(Vec2D(), ourTranslation,
-        Vec2D.add(Vec2D(), targetTranslation, toTarget), strength);
+    Vec2D position = Vec2D.lerp(
+      Vec2D(),
+      ourTranslation,
+      Vec2D.add(Vec2D(), targetTranslation, toTarget),
+      strength,
+    );
     world[4] = position[0];
     world[5] = position[1];
   }
 
   void copyDistanceConstraint(
-      ActorDistanceConstraint node, ActorArtboard resetArtboard) {
+    ActorDistanceConstraint node,
+    ActorArtboard resetArtboard,
+  ) {
     copyTargetedConstraint(node, resetArtboard);
     _distance = node._distance;
     _mode = node._mode;
@@ -91,8 +97,11 @@ class ActorDistanceConstraint extends ActorTargetedConstraint {
   void update(int dirt) {}
 
   // ignore: prefer_constructors_over_static_methods
-  static ActorDistanceConstraint read(ActorArtboard artboard,
-      StreamReader reader, ActorDistanceConstraint? component) {
+  static ActorDistanceConstraint read(
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorDistanceConstraint? component,
+  ) {
     // ignore: parameter_assignments
     component ??= ActorDistanceConstraint();
     ActorTargetedConstraint.read(artboard, reader, component);

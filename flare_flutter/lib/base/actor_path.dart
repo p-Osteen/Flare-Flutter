@@ -11,7 +11,7 @@ import 'package:flare_flutter/base/math/vec2d.dart';
 import 'package:flare_flutter/base/path_point.dart';
 import 'package:flare_flutter/base/stream_reader.dart';
 
-abstract class ActorBasePath {
+mixin ActorBasePath {
   ActorShape? _shape;
   bool _isRootPath = false;
   List<List<ActorClip>?> get allClips;
@@ -40,7 +40,7 @@ abstract class ActorBasePath {
       Vec2D.fromValues(obb[0], obb[1]),
       Vec2D.fromValues(obb[2], obb[1]),
       Vec2D.fromValues(obb[2], obb[3]),
-      Vec2D.fromValues(obb[0], obb[3])
+      Vec2D.fromValues(obb[0], obb[3]),
     ];
 
     Mat2D localTransform;
@@ -305,7 +305,10 @@ class ActorPath extends ActorNode with ActorSkinnable, ActorBasePath {
   }
 
   static ActorPath read(
-      ActorArtboard artboard, StreamReader reader, ActorPath component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorPath component,
+  ) {
     ActorNode.read(artboard, reader, component);
     ActorSkinnable.read(artboard, reader, component);
 

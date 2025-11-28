@@ -67,7 +67,10 @@ abstract class ActorDrawable extends ActorNode {
   void initializeGraphics() {}
 
   static ActorDrawable read(
-      ActorArtboard artboard, StreamReader reader, ActorDrawable component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorDrawable component,
+  ) {
     ActorNode.read(artboard, reader, component);
 
     component.isHidden = !reader.readBool('isVisible');

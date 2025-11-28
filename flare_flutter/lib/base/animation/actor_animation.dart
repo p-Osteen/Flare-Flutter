@@ -7,7 +7,9 @@ import 'package:flare_flutter/base/animation/property_types.dart';
 import 'package:flare_flutter/base/stream_reader.dart';
 
 typedef KeyFrame? KeyFrameReader(
-    StreamReader reader, ActorComponent? component);
+  StreamReader reader,
+  ActorComponent? component,
+);
 
 class ActorAnimation {
   final String _name;
@@ -18,10 +20,10 @@ class ActorAnimation {
   final List<ComponentAnimation> _triggerComponents = <ComponentAnimation>[];
 
   ActorAnimation(String name, int fps, double duration, bool isLooping)
-      : _name = name,
-        _fps = fps,
-        _duration = duration,
-        _isLooping = isLooping;
+    : _name = name,
+      _fps = fps,
+      _duration = duration,
+      _isLooping = isLooping;
 
   List<ComponentAnimation> get animatedComponents => _components;
 
@@ -52,8 +54,12 @@ class ActorAnimation {
     }
   }
 
-  void triggerEvents(List<ActorComponent> components, double fromTime,
-      double toTime, List<AnimationEventArgs> triggerEvents) {
+  void triggerEvents(
+    List<ActorComponent> components,
+    double fromTime,
+    double toTime,
+    List<AnimationEventArgs> triggerEvents,
+  ) {
     for (int i = 0; i < _triggerComponents.length; i++) {
       ComponentAnimation keyedComponent = _triggerComponents[i];
       for (final PropertyAnimation? property in keyedComponent.properties) {
@@ -94,8 +100,15 @@ class ActorAnimation {
               if (kfl > 0 && keyFrames[0]!.time == toTime) {
                 ActorComponent component =
                     components[keyedComponent.componentIndex];
-                triggerEvents.add(AnimationEventArgs(component.name, component,
-                    property.propertyType, toTime, 0.0));
+                triggerEvents.add(
+                  AnimationEventArgs(
+                    component.name,
+                    component,
+                    property.propertyType,
+                    toTime,
+                    0.0,
+                  ),
+                );
               }
             } else {
               for (int k = idx - 1; k >= 0; k--) {
@@ -104,12 +117,15 @@ class ActorAnimation {
                 if (frame.time > fromTime) {
                   ActorComponent component =
                       components[keyedComponent.componentIndex];
-                  triggerEvents.add(AnimationEventArgs(
+                  triggerEvents.add(
+                    AnimationEventArgs(
                       component.name,
                       component,
                       property.propertyType,
                       frame.time,
-                      toTime - frame.time));
+                      toTime - frame.time,
+                    ),
+                  );
                   /*triggered.push({
 										name:component._Name,
 										component:component,
@@ -131,19 +147,24 @@ class ActorAnimation {
   }
 
   static ActorAnimation read(
-      StreamReader reader, List<ActorComponent?> components) {
+    StreamReader reader,
+    List<ActorComponent?> components,
+  ) {
     ActorAnimation animation = ActorAnimation(
-        reader.readString('name'),
-        reader.readUint8('fps'),
-        reader.readFloat32('duration'),
-        reader.readBool('isLooping'));
+      reader.readString('name'),
+      reader.readUint8('fps'),
+      reader.readFloat32('duration'),
+      reader.readBool('isLooping'),
+    );
     reader.openArray('keyed');
     int numKeyedComponents = reader.readUint16Length();
 
     List<ComponentAnimation> animatedComponents = <ComponentAnimation>[];
     for (int i = 0; i < numKeyedComponents; i++) {
-      ComponentAnimation componentAnimation =
-          ComponentAnimation.read(reader, components);
+      ComponentAnimation componentAnimation = ComponentAnimation.read(
+        reader,
+        components,
+      );
       animatedComponents.add(componentAnimation);
     }
     reader.closeArray();
@@ -173,13 +194,17 @@ class AnimationEventArgs {
   final double _keyFrameTime;
   final double _elapsedTime;
 
-  AnimationEventArgs(String name, ActorComponent component, int type,
-      double keyframeTime, double elapsedTime)
-      : _name = name,
-        _component = component,
-        _propertyType = type,
-        _keyFrameTime = keyframeTime,
-        _elapsedTime = elapsedTime;
+  AnimationEventArgs(
+    String name,
+    ActorComponent component,
+    int type,
+    double keyframeTime,
+    double elapsedTime,
+  ) : _name = name,
+      _component = component,
+      _propertyType = type,
+      _keyFrameTime = keyframeTime,
+      _elapsedTime = elapsedTime;
 
   ActorComponent get component {
     return _component;
@@ -225,15 +250,22 @@ class ComponentAnimation {
   }
 
   static ComponentAnimation read(
-      StreamReader reader, List<ActorComponent?> components) {
+    StreamReader reader,
+    List<ActorComponent?> components,
+  ) {
     reader.openObject('component');
-    ComponentAnimation componentAnimation =
-        ComponentAnimation(reader.readId('component'));
+    ComponentAnimation componentAnimation = ComponentAnimation(
+      reader.readId('component'),
+    );
     int numProperties = reader.readUint16Length();
     for (int i = 0; i < numProperties; i++) {
       assert(componentAnimation._componentIndex < components.length);
-      componentAnimation._properties.add(PropertyAnimation.read(
-          reader, components[componentAnimation._componentIndex]));
+      componentAnimation._properties.add(
+        PropertyAnimation.read(
+          reader,
+          components[componentAnimation._componentIndex],
+        ),
+      );
     }
     reader.closeObject();
 
@@ -302,13 +334,16 @@ class PropertyAnimation {
   }
 
   static PropertyAnimation? read(
-      StreamReader reader, ActorComponent? component) {
+    StreamReader reader,
+    ActorComponent? component,
+  ) {
     StreamReader? propertyBlock = reader.readNextBlock(propertyTypesMap);
     if (propertyBlock == null) {
       return null;
     }
-    PropertyAnimation propertyAnimation =
-        PropertyAnimation(propertyBlock.blockType);
+    PropertyAnimation propertyAnimation = PropertyAnimation(
+      propertyBlock.blockType,
+    );
 
     KeyFrameReader? keyFrameReader;
     switch (propertyAnimation._type) {

@@ -185,8 +185,9 @@ abstract class JSONReader implements StreamReader {
 
   @override
   Uint8List readAsset() {
-    String encodedAsset =
-        readString('data'); // are we sure we need a label here?
+    String encodedAsset = readString(
+      'data',
+    ); // are we sure we need a label here?
     return const Base64Decoder().convert(encodedAsset, 22);
   }
 

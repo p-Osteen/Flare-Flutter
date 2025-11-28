@@ -166,9 +166,11 @@ abstract class Actor {
     int artboardCount = block.readUint16Length();
     _artboards = List<ActorArtboard?>.filled(artboardCount, null);
 
-    for (int artboardIndex = 0, end = _artboards.length;
-        artboardIndex < end;
-        artboardIndex++) {
+    for (
+      int artboardIndex = 0, end = _artboards.length;
+      artboardIndex < end;
+      artboardIndex++
+    ) {
       StreamReader? artboardBlock = block.readNextBlock(blockTypesMap);
       if (artboardBlock == null) {
         break;
@@ -186,7 +188,9 @@ abstract class Actor {
   }
 
   Future<List<Uint8List>> readAtlasesBlock(
-      StreamReader block, dynamic context) {
+    StreamReader block,
+    dynamic context,
+  ) {
     // Determine whether or not the atlas is in or out of band.
     bool isOOB = block.readBool('isOOB');
     block.openArray('data');

@@ -61,8 +61,9 @@ class ActorRotationConstraint extends ActorTargetedConstraint {
       Mat2D.decompose(transformB, _componentsB);
 
       if (!_copy) {
-        _componentsB.rotation =
-            _destSpace == TransformSpace.local ? 1.0 : _componentsA.rotation;
+        _componentsB.rotation = _destSpace == TransformSpace.local
+            ? 1.0
+            : _componentsA.rotation;
       } else {
         _componentsB.rotation *= _scale;
         if (_offset) {
@@ -127,7 +128,9 @@ class ActorRotationConstraint extends ActorTargetedConstraint {
   }
 
   void copyRotationConstraint(
-      ActorRotationConstraint node, ActorArtboard resetArtboard) {
+    ActorRotationConstraint node,
+    ActorArtboard resetArtboard,
+  ) {
     copyTargetedConstraint(node, resetArtboard);
 
     _copy = node._copy;
@@ -153,8 +156,11 @@ class ActorRotationConstraint extends ActorTargetedConstraint {
   @override
   void update(int dirt) {}
   // ignore: prefer_constructors_over_static_methods
-  static ActorRotationConstraint read(ActorArtboard artboard,
-      StreamReader reader, ActorRotationConstraint? component) {
+  static ActorRotationConstraint read(
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorRotationConstraint? component,
+  ) {
     // ignore: parameter_assignments
     component ??= ActorRotationConstraint();
     ActorTargetedConstraint.read(artboard, reader, component);

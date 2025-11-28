@@ -79,8 +79,9 @@ class ActorLayerEffectRenderer extends ActorDrawable {
 
   void computeMasks() {
     _renderMasks.clear();
-    var masks =
-        parent!.children!.whereType<ActorMask>().toList(growable: false);
+    var masks = parent!.children!.whereType<ActorMask>().toList(
+      growable: false,
+    );
 
     for (final mask in masks) {
       var renderMask = ActorLayerEffectRendererMask(mask);
@@ -116,16 +117,18 @@ class ActorLayerEffectRenderer extends ActorDrawable {
         .where((child) => child is ActorBlur && child is! ActorShadow)
         .toList(growable: false);
     _blur = blurs.isNotEmpty ? blurs.first as ActorBlur : null;
-    _dropShadows =
-        parent!.children!.whereType<ActorDropShadow>().toList(growable: false);
-    _innerShadows =
-        parent!.children!.whereType<ActorInnerShadow>().toList(growable: false);
+    _dropShadows = parent!.children!.whereType<ActorDropShadow>().toList(
+      growable: false,
+    );
+    _innerShadows = parent!.children!.whereType<ActorInnerShadow>().toList(
+      growable: false,
+    );
   }
 
   @override
   ActorLayerEffectRenderer makeInstance(ActorArtboard resetArtboard) {
-    ActorLayerEffectRenderer instanceNode =
-        resetArtboard.actor.makeLayerEffectRenderer();
+    ActorLayerEffectRenderer instanceNode = resetArtboard.actor
+        .makeLayerEffectRenderer();
     instanceNode.copyDrawable(this, resetArtboard);
     return instanceNode;
   }
@@ -146,7 +149,8 @@ class ActorLayerEffectRenderer extends ActorDrawable {
 
   void sortDrawables() {
     _drawables.sort(
-        (ActorDrawable? a, ActorDrawable? b) => a!.drawOrder - b!.drawOrder);
+      (ActorDrawable? a, ActorDrawable? b) => a!.drawOrder - b!.drawOrder,
+    );
   }
 }
 

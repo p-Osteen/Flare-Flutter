@@ -22,8 +22,11 @@ abstract class ActorTargetedConstraint extends ActorConstraint {
     }
   }
 
-  static ActorTargetedConstraint read(ActorArtboard artboard,
-      StreamReader reader, ActorTargetedConstraint component) {
+  static ActorTargetedConstraint read(
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorTargetedConstraint component,
+  ) {
     ActorConstraint.read(artboard, reader, component);
     component._targetIdx = reader.readId('target');
 
@@ -31,7 +34,9 @@ abstract class ActorTargetedConstraint extends ActorConstraint {
   }
 
   void copyTargetedConstraint(
-      ActorTargetedConstraint node, ActorArtboard resetArtboard) {
+    ActorTargetedConstraint node,
+    ActorArtboard resetArtboard,
+  ) {
     copyConstraint(node, resetArtboard);
 
     _targetIdx = node._targetIdx;

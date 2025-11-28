@@ -13,7 +13,10 @@ class ActorJellyBone extends ActorBoneBase {
 
   // ignore: prefer_constructors_over_static_methods
   static ActorJellyBone read(
-      ActorArtboard artboard, StreamReader reader, ActorJellyBone? node) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorJellyBone? node,
+  ) {
     // ignore: parameter_assignments
     node ??= ActorJellyBone();
 

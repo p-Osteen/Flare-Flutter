@@ -20,7 +20,10 @@ class ActorEvent extends ActorComponent {
   void update(int dirt) {}
 
   static ActorComponent read(
-      ActorArtboard artboard, StreamReader reader, ActorEvent? component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorEvent? component,
+  ) {
     // ignore: parameter_assignments
     component ??= ActorEvent();
 

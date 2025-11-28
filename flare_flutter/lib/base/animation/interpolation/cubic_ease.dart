@@ -70,15 +70,18 @@ class Cubic extends CubicEase {
     int currentSample = 1;
     int lastSample = splineTableSize - 1;
 
-    for (;
-        currentSample != lastSample && _values[currentSample] <= x;
-        ++currentSample) {
+    for (
+      ;
+      currentSample != lastSample && _values[currentSample] <= x;
+      ++currentSample
+    ) {
       intervalStart += sampleStepSize;
     }
     --currentSample;
 
     // Interpolate to provide an initial guess for t
-    var dist = (x - _values[currentSample]) /
+    var dist =
+        (x - _values[currentSample]) /
         (_values[currentSample + 1] - _values[currentSample]);
     var guessForT = intervalStart + dist * sampleStepSize;
 

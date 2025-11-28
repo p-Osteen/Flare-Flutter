@@ -4,9 +4,7 @@ class JSONBlockReader extends JSONReader {
   @override
   int blockType;
 
-  JSONBlockReader(Map object)
-      : blockType = 0,
-        super(object);
+  JSONBlockReader(Map object) : blockType = 0, super(object);
   JSONBlockReader.fromObject(this.blockType, Map object) : super(object);
 
   @override

@@ -12,7 +12,10 @@ abstract class ActorLayerEffect extends ActorComponent {
   }
 
   static ActorLayerEffect read(
-      ActorArtboard artboard, StreamReader reader, ActorLayerEffect component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorLayerEffect component,
+  ) {
     ActorComponent.read(artboard, reader, component);
     component._isActive = reader.readBool('isActive');
 

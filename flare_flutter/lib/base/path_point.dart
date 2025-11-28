@@ -5,18 +5,15 @@ import 'package:flare_flutter/base/math/mat2d.dart';
 import 'package:flare_flutter/base/math/vec2d.dart';
 import 'package:flare_flutter/base/stream_reader.dart';
 
-HashMap<int, PointType> pointTypeLookup =
-    HashMap<int, PointType>.fromIterables([
-  0,
-  1,
-  2,
-  3
-], [
-  PointType.straight,
-  PointType.mirror,
-  PointType.disconnected,
-  PointType.asymmetric
-]);
+HashMap<int, PointType> pointTypeLookup = HashMap<int, PointType>.fromIterables(
+  [0, 1, 2, 3],
+  [
+    PointType.straight,
+    PointType.mirror,
+    PointType.disconnected,
+    PointType.asymmetric,
+  ],
+);
 
 class CubicPathPoint extends PathPoint {
   Vec2D _in = Vec2D();
@@ -25,7 +22,7 @@ class CubicPathPoint extends PathPoint {
   CubicPathPoint(PointType type) : super(type);
 
   CubicPathPoint.fromValues(Vec2D translation, Vec2D inPoint, Vec2D outPoint)
-      : super(PointType.disconnected) {
+    : super(PointType.disconnected) {
     _translation = translation;
     _in = inPoint;
     _out = outPoint;
@@ -209,12 +206,12 @@ class StraightPathPoint extends PathPoint {
   StraightPathPoint() : super(PointType.straight);
 
   StraightPathPoint.fromTranslation(Vec2D translation)
-      : super(PointType.straight) {
+    : super(PointType.straight) {
     _translation = translation;
   }
 
   StraightPathPoint.fromValues(Vec2D translation, this.radius)
-      : super(PointType.straight) {
+    : super(PointType.straight) {
     _translation = translation;
   }
 

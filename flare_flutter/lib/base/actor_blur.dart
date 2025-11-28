@@ -9,7 +9,10 @@ class ActorBlur extends ActorLayerEffect {
 
   // ignore: prefer_constructors_over_static_methods
   static ActorBlur read(
-      ActorArtboard artboard, StreamReader reader, ActorBlur? component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorBlur? component,
+  ) {
     // ignore: parameter_assignments
     component ??= ActorBlur();
     ActorLayerEffect.read(artboard, reader, component);

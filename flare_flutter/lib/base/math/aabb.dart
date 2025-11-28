@@ -11,7 +11,7 @@ class AABB {
   AABB.clone(AABB a) : _buffer = Float32List.fromList(a.values);
 
   AABB.fromValues(double a, double b, double c, double d)
-      : _buffer = Float32List.fromList([a, b, c, d]);
+    : _buffer = Float32List.fromList([a, b, c, d]);
 
   Vec2D get maximum {
     return Vec2D.fromValues(_buffer[2], _buffer[3]);

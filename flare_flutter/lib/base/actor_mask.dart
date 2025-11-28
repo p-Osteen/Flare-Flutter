@@ -8,17 +8,15 @@ import 'stream_reader.dart';
 
 enum MaskType { alpha, invertedAlpha, luminance, invertedLuminance }
 
-HashMap<int, MaskType> maskTypeLookup = HashMap<int, MaskType>.fromIterables([
-  0,
-  1,
-  2,
-  3
-], [
-  MaskType.alpha,
-  MaskType.invertedAlpha,
-  MaskType.luminance,
-  MaskType.invertedLuminance
-]);
+HashMap<int, MaskType> maskTypeLookup = HashMap<int, MaskType>.fromIterables(
+  [0, 1, 2, 3],
+  [
+    MaskType.alpha,
+    MaskType.invertedAlpha,
+    MaskType.luminance,
+    MaskType.invertedLuminance,
+  ],
+);
 
 class ActorMask extends ActorLayerEffect {
   late ActorNode _source;
@@ -28,7 +26,10 @@ class ActorMask extends ActorLayerEffect {
   MaskType get maskType => _maskType;
 
   static ActorMask read(
-      ActorArtboard artboard, StreamReader reader, ActorMask component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorMask component,
+  ) {
     ActorLayerEffect.read(artboard, reader, component);
     component._sourceIdx = reader.readId('source');
     component._maskType =

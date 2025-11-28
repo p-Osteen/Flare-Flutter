@@ -49,7 +49,7 @@ const Map<String, int> blockTypesMap = {
   'mask': BlockTypes.actorMask,
   'blur': BlockTypes.actorBlur,
   'dropShadow': BlockTypes.actorDropShadow,
-  'innerShadow': BlockTypes.actorInnerShadow
+  'innerShadow': BlockTypes.actorInnerShadow,
 };
 
 class BlockTypes {

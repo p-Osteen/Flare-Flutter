@@ -30,11 +30,15 @@ class ActorShape extends ActorDrawable {
   }
 
   static ActorShape read(
-      ActorArtboard artboard, StreamReader reader, ActorShape component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorShape component,
+  ) {
     ActorDrawable.read(artboard, reader, component);
     if (artboard.actor.version >= 22) {
-      component._transformAffectsStroke =
-          reader.readBool('transformAffectsStroke');
+      component._transformAffectsStroke = reader.readBool(
+        'transformAffectsStroke',
+      );
     }
 
     return component;
@@ -127,7 +131,7 @@ class ActorShape extends ActorDrawable {
       Vec2D.fromValues(aabb[0], aabb[1]),
       Vec2D.fromValues(aabb[2], aabb[1]),
       Vec2D.fromValues(aabb[2], aabb[3]),
-      Vec2D.fromValues(aabb[0], aabb[3])
+      Vec2D.fromValues(aabb[0], aabb[3]),
     ];
     for (var i = 0; i < points.length; i++) {
       Vec2D pt = points[i];

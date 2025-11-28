@@ -37,7 +37,10 @@ class ActorBoneBase extends ActorNode {
   }
 
   static ActorBoneBase read(
-      ActorArtboard artboard, StreamReader reader, ActorBoneBase node) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorBoneBase node,
+  ) {
     ActorNode.read(artboard, reader, node);
 
     node._length = reader.readFloat32('length');

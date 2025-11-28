@@ -23,15 +23,14 @@ import 'package:flare_flutter/base/path_point.dart';
 import 'package:flare_flutter/base/stream_reader.dart';
 
 HashMap<int, InterpolationTypes> interpolationTypesLookup =
-    HashMap<int, InterpolationTypes>.fromIterables([
-  0,
-  1,
-  2
-], [
-  InterpolationTypes.hold,
-  InterpolationTypes.linear,
-  InterpolationTypes.cubic
-]);
+    HashMap<int, InterpolationTypes>.fromIterables(
+      [0, 1, 2],
+      [
+        InterpolationTypes.hold,
+        InterpolationTypes.linear,
+        InterpolationTypes.cubic,
+      ],
+    );
 
 class DrawOrderIndex {
   final int componentIndex;
@@ -52,7 +51,11 @@ abstract class KeyFrame {
   void apply(ActorComponent? component, double mix);
 
   void applyInterpolation(
-      ActorComponent? component, double time, KeyFrame toFrame, double mix);
+    ActorComponent? component,
+    double time,
+    KeyFrame toFrame,
+    double mix,
+  );
   void setNext(KeyFrame? frame);
   static bool read(StreamReader reader, KeyFrame frame) {
     frame._time = reader.readFloat64('time');
@@ -72,7 +75,11 @@ class KeyFrameActiveChild extends KeyFrame {
 
   @override
   void applyInterpolation(
-      ActorComponent? component, double time, KeyFrame toFrame, double mix) {
+    ActorComponent? component,
+    double time,
+    KeyFrame toFrame,
+    double mix,
+  ) {
     apply(component, mix);
   }
 
@@ -129,7 +136,11 @@ class KeyFrameBooleanProperty extends KeyFrame {
 
   @override
   void applyInterpolation(
-      ActorComponent? component, double time, KeyFrame toFrame, double mix) {
+    ActorComponent? component,
+    double time,
+    KeyFrame toFrame,
+    double mix,
+  ) {
     apply(component, mix);
   }
 
@@ -154,7 +165,11 @@ class KeyFrameCollisionEnabledProperty extends KeyFrame {
 
   @override
   void applyInterpolation(
-      ActorComponent? component, double time, KeyFrame toFrame, double mix) {
+    ActorComponent? component,
+    double time,
+    KeyFrame toFrame,
+    double mix,
+  ) {
     apply(component, mix);
   }
 
@@ -222,7 +237,11 @@ class KeyFrameDrawOrder extends KeyFrame {
 
   @override
   void applyInterpolation(
-      ActorComponent? component, double time, KeyFrame toFrame, double mix) {
+    ActorComponent? component,
+    double time,
+    KeyFrame toFrame,
+    double mix,
+  ) {
     apply(component, mix);
   }
 
@@ -242,7 +261,9 @@ class KeyFrameDrawOrder extends KeyFrame {
     for (int i = 0; i < numOrderedNodes; i++) {
       reader.openObject('order');
       DrawOrderIndex drawOrder = DrawOrderIndex(
-          reader.readId('component'), reader.readUint16('order'));
+        reader.readId('component'),
+        reader.readUint16('order'),
+      );
       reader.closeObject();
       frame._orderedNodes.add(drawOrder);
     }
@@ -278,14 +299,19 @@ class KeyFrameFillColor extends KeyFrameWithInterpolation {
 
   @override
   void applyInterpolation(
-      ActorComponent? component, double time, KeyFrame toFrame, double mix) {
+    ActorComponent? component,
+    double time,
+    KeyFrame toFrame,
+    double mix,
+  ) {
     ActorColor ac = component as ActorColor;
     Float32List wr = ac.color;
     Float32List to = (toFrame as KeyFrameFillColor)._value;
     int l = _value.length;
 
-    double f =
-        _interpolator.getEasedMix((time - _time) / (toFrame.time - _time));
+    double f = _interpolator.getEasedMix(
+      (time - _time) / (toFrame.time - _time),
+    );
     double fi = 1.0 - f;
     if (mix == 1.0) {
       for (int i = 0; i < l; i++) {
@@ -369,12 +395,17 @@ class KeyFrameGradient extends KeyFrameWithInterpolation {
 
   @override
   void applyInterpolation(
-      ActorComponent? component, double time, KeyFrame toFrame, double mix) {
+    ActorComponent? component,
+    double time,
+    KeyFrame toFrame,
+    double mix,
+  ) {
     GradientColor gradient = component as GradientColor;
     Float32List v = (toFrame as KeyFrameGradient)._value;
 
-    double f =
-        _interpolator.getEasedMix((time - _time) / (toFrame.time - _time));
+    double f = _interpolator.getEasedMix(
+      (time - _time) / (toFrame.time - _time),
+    );
     double fi = 1.0 - f;
 
     int ridx = 0;
@@ -460,14 +491,19 @@ class KeyFrameImageVertices extends KeyFrameWithInterpolation {
 
   @override
   void applyInterpolation(
-      ActorComponent? component, double time, KeyFrame toFrame, double mix) {
+    ActorComponent? component,
+    double time,
+    KeyFrame toFrame,
+    double mix,
+  ) {
     ActorImage imageNode = component as ActorImage;
     Float32List? wr = imageNode.animationDeformedVertices;
     Float32List to = (toFrame as KeyFrameImageVertices)._vertices;
     int l = _vertices.length;
 
-    double f =
-        _interpolator.getEasedMix((time - _time) / (toFrame.time - _time));
+    double f = _interpolator.getEasedMix(
+      (time - _time) / (toFrame.time - _time),
+    );
 
     double fi = 1.0 - f;
     if (mix == 1.0) {
@@ -498,8 +534,10 @@ class KeyFrameImageVertices extends KeyFrameWithInterpolation {
     }
 
     ActorImage imageNode = component as ActorImage;
-    frame._vertices =
-        reader.readFloat32Array(imageNode.vertexCount * 2, 'value');
+    frame._vertices = reader.readFloat32Array(
+      imageNode.vertexCount * 2,
+      'value',
+    );
 
     imageNode.doesAnimationVertexDeform = true;
 
@@ -539,7 +577,11 @@ abstract class KeyFrameInt extends KeyFrameWithInterpolation {
 
   @override
   void applyInterpolation(
-      ActorComponent? component, double time, KeyFrame toFrame, double mix) {
+    ActorComponent? component,
+    double time,
+    KeyFrame toFrame,
+    double mix,
+  ) {
     KeyFrameNumeric to = toFrame as KeyFrameNumeric;
     double f = _interpolator.getEasedMix((time - _time) / (to._time - _time));
     setValue(component, _value * (1.0 - f) + to._value * f, mix);
@@ -602,7 +644,11 @@ abstract class KeyFrameNumeric extends KeyFrameWithInterpolation {
 
   @override
   void applyInterpolation(
-      ActorComponent? component, double time, KeyFrame toFrame, double mix) {
+    ActorComponent? component,
+    double time,
+    KeyFrame toFrame,
+    double mix,
+  ) {
     KeyFrameNumeric to = toFrame as KeyFrameNumeric;
     double f = _interpolator.getEasedMix((time - _time) / (to._time - _time));
     setValue(component, _value * (1.0 - f) + to._value * f, mix);
@@ -683,14 +729,19 @@ class KeyFramePathVertices extends KeyFrameWithInterpolation {
 
   @override
   void applyInterpolation(
-      ActorComponent? component, double time, KeyFrame toFrame, double mix) {
+    ActorComponent? component,
+    double time,
+    KeyFrame toFrame,
+    double mix,
+  ) {
     ActorPath path = component as ActorPath;
     Float32List? wr = path.vertexDeform;
     Float32List to = (toFrame as KeyFramePathVertices)._vertices;
     int l = _vertices.length;
 
-    double f =
-        _interpolator.getEasedMix((time - _time) / (toFrame.time - _time));
+    double f = _interpolator.getEasedMix(
+      (time - _time) / (toFrame.time - _time),
+    );
     double fi = 1.0 - f;
     if (mix == 1.0) {
       for (int i = 0; i < l; i++) {
@@ -821,12 +872,17 @@ class KeyFrameRadial extends KeyFrameWithInterpolation {
 
   @override
   void applyInterpolation(
-      ActorComponent? component, double time, KeyFrame toFrame, double mix) {
+    ActorComponent? component,
+    double time,
+    KeyFrame toFrame,
+    double mix,
+  ) {
     RadialGradientColor radial = component as RadialGradientColor;
     Float32List v = (toFrame as KeyFrameRadial)._value;
 
-    double f =
-        _interpolator.getEasedMix((time - _time) / (toFrame.time - _time));
+    double f = _interpolator.getEasedMix(
+      (time - _time) / (toFrame.time - _time),
+    );
     double fi = 1.0 - f;
 
     int ridx = 0;
@@ -974,14 +1030,19 @@ class KeyFrameShadowColor extends KeyFrameWithInterpolation {
 
   @override
   void applyInterpolation(
-      ActorComponent? component, double time, KeyFrame toFrame, double mix) {
+    ActorComponent? component,
+    double time,
+    KeyFrame toFrame,
+    double mix,
+  ) {
     ActorShadow shadow = component as ActorShadow;
     Float32List wr = shadow.color;
     Float32List to = (toFrame as KeyFrameShadowColor)._value;
     int l = _value.length;
 
-    double f =
-        _interpolator.getEasedMix((time - _time) / (toFrame.time - _time));
+    double f = _interpolator.getEasedMix(
+      (time - _time) / (toFrame.time - _time),
+    );
 
     double fi = 1.0 - f;
     if (mix == 1.0) {
@@ -1093,7 +1154,11 @@ class KeyFrameStringProperty extends KeyFrame {
 
   @override
   void applyInterpolation(
-      ActorComponent? component, double time, KeyFrame toFrame, double mix) {
+    ActorComponent? component,
+    double time,
+    KeyFrame toFrame,
+    double mix,
+  ) {
     apply(component, mix);
   }
 
@@ -1139,14 +1204,19 @@ class KeyFrameStrokeColor extends KeyFrameWithInterpolation {
 
   @override
   void applyInterpolation(
-      ActorComponent? component, double time, KeyFrame toFrame, double mix) {
+    ActorComponent? component,
+    double time,
+    KeyFrame toFrame,
+    double mix,
+  ) {
     ColorStroke cs = component as ColorStroke;
     Float32List wr = cs.color;
     Float32List to = (toFrame as KeyFrameStrokeColor)._value;
     int len = _value.length;
 
-    double f =
-        _interpolator.getEasedMix((time - _time) / (toFrame.time - _time));
+    double f = _interpolator.getEasedMix(
+      (time - _time) / (toFrame.time - _time),
+    );
     double fi = 1.0 - f;
     if (mix == 1.0) {
       for (int i = 0; i < len; i++) {
@@ -1250,7 +1320,11 @@ class KeyFrameTrigger extends KeyFrame {
 
   @override
   void applyInterpolation(
-      ActorComponent? component, double time, KeyFrame toFrame, double mix) {}
+    ActorComponent? component,
+    double time,
+    KeyFrame toFrame,
+    double mix,
+  ) {}
 
   @override
   void setNext(KeyFrame? frame) {
@@ -1304,8 +1378,6 @@ abstract class KeyFrameWithInterpolation extends KeyFrame {
           }
           break;
         }
-      default:
-        frame._interpolator = HoldInterpolator.instance;
     }
     return true;
   }

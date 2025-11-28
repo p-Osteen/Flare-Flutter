@@ -60,7 +60,10 @@ abstract class ActorConstraint extends ActorComponent {
   }
 
   static ActorConstraint read(
-      ActorArtboard artboard, StreamReader reader, ActorConstraint component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorConstraint component,
+  ) {
     ActorComponent.read(artboard, reader, component);
     component._strength = reader.readFloat32('strength');
     component._isEnabled = reader.readBool('isEnabled');

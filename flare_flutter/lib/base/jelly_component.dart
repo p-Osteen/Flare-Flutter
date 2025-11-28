@@ -75,6 +75,7 @@ class JellyComponent extends ActorComponent {
     _inTargetIdx = component._inTargetIdx;
     _outTargetIdx = component._outTargetIdx;
   }
+
   @override
   ActorComponent makeInstance(ActorArtboard artboard) {
     JellyComponent instance = JellyComponent();
@@ -111,8 +112,12 @@ class JellyComponent extends ActorComponent {
 
       Vec2D p1 = curve[pointIndex - 1];
       Vec2D p2 = curve[pointIndex];
-      points.add(Vec2D.fromValues(
-          p1[0] * ratio + p2[0] * iratio, p1[1] * ratio + p2[1] * iratio));
+      points.add(
+        Vec2D.fromValues(
+          p1[0] * ratio + p2[0] * iratio,
+          p1[1] * ratio + p2[1] * iratio,
+        ),
+      );
     }
 
     return points;
@@ -173,8 +178,9 @@ class JellyComponent extends ActorComponent {
     }
 
     // We want to depend on any and all constraints that our dependents have.
-    Set<ActorConstraint> constraints =
-        Set<ActorConstraint>.from(dependencyConstraints);
+    Set<ActorConstraint> constraints = Set<ActorConstraint>.from(
+      dependencyConstraints,
+    );
     for (final ActorConstraint constraint in constraints) {
       artboard.addDependency(this, constraint);
     }
@@ -208,10 +214,14 @@ class JellyComponent extends ActorComponent {
       if (firstBone == bone &&
           parentBoneJelly != null &&
           parentBoneJelly._outTarget != null) {
-        Vec2D translation =
-            parentBoneJelly._outTarget!.getWorldTranslation(Vec2D());
-        Vec2D localParentOut =
-            Vec2D.transformMat2D(Vec2D(), translation, inverseWorld);
+        Vec2D translation = parentBoneJelly._outTarget!.getWorldTranslation(
+          Vec2D(),
+        );
+        Vec2D localParentOut = Vec2D.transformMat2D(
+          Vec2D(),
+          translation,
+          inverseWorld,
+        );
         Vec2D.normalize(localParentOut, localParentOut);
         Vec2D.negate(_inDirection, localParentOut);
       } else {
@@ -243,10 +253,14 @@ class JellyComponent extends ActorComponent {
       ActorBone firstBone = bone.firstBone!;
       JellyComponent? firstBoneJelly = firstBone.jelly;
       if (firstBoneJelly != null && firstBoneJelly._inTarget != null) {
-        Vec2D translation =
-            firstBoneJelly._inTarget!.getWorldTranslation(Vec2D());
+        Vec2D translation = firstBoneJelly._inTarget!.getWorldTranslation(
+          Vec2D(),
+        );
         Vec2D worldChildInDir = Vec2D.subtract(
-            Vec2D(), firstBone.getWorldTranslation(Vec2D()), translation);
+          Vec2D(),
+          firstBone.getWorldTranslation(Vec2D()),
+          translation,
+        );
         Vec2D.transformMat2(_outDirection, worldChildInDir, inverseWorld);
       } else {
         Vec2D d1 = Vec2D.fromValues(1.0, 0.0);
@@ -262,7 +276,10 @@ class JellyComponent extends ActorComponent {
       }
       Vec2D.normalize(_outDirection, _outDirection);
       Vec2D scaledOut = Vec2D.scale(
-          Vec2D(), _outDirection, _easeOut * bone.length * curveConstant);
+        Vec2D(),
+        _outDirection,
+        _easeOut * bone.length * curveConstant,
+      );
       _outPoint[0] = bone.length;
       _outPoint[1] = 0.0;
       Vec2D.add(_outPoint, _outPoint, scaledOut);
@@ -271,7 +288,10 @@ class JellyComponent extends ActorComponent {
       _outDirection[1] = 0.0;
 
       Vec2D scaledOut = Vec2D.scale(
-          Vec2D(), _outDirection, _easeOut * bone.length * curveConstant);
+        Vec2D(),
+        _outDirection,
+        _easeOut * bone.length * curveConstant,
+      );
       _outPoint[0] = bone.length;
       _outPoint[1] = 0.0;
       Vec2D.add(_outPoint, _outPoint, scaledOut);
@@ -332,8 +352,15 @@ class JellyComponent extends ActorComponent {
     }
   }
 
-  static void forwardDiffBezier(double c0, double c1, double c2, double c3,
-      List<Vec2D> points, int count, int offset) {
+  static void forwardDiffBezier(
+    double c0,
+    double c1,
+    double c2,
+    double c3,
+    List<Vec2D> points,
+    int count,
+    int offset,
+  ) {
     double f = count.toDouble();
 
     double p0 = c0;
@@ -375,7 +402,10 @@ class JellyComponent extends ActorComponent {
 
   // ignore: prefer_constructors_over_static_methods
   static JellyComponent read(
-      ActorArtboard artboard, StreamReader reader, JellyComponent? node) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    JellyComponent? node,
+  ) {
     // ignore: parameter_assignments
     node ??= JellyComponent();
     ActorComponent.read(artboard, reader, node);

@@ -52,7 +52,10 @@ class ActorNodeSolo extends ActorNode {
 
   // ignore: prefer_constructors_over_static_methods
   static ActorNodeSolo read(
-      ActorArtboard artboard, StreamReader reader, ActorNodeSolo? node) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorNodeSolo? node,
+  ) {
     // ignore: parameter_assignments
     node ??= ActorNodeSolo();
 

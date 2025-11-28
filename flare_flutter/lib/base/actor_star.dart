@@ -30,7 +30,7 @@ class ActorStar extends ActorProceduralPath {
   @override
   List<PathPoint> get points {
     List<PathPoint> _starPoints = <PathPoint>[
-      StraightPathPoint.fromTranslation(Vec2D.fromValues(0.0, -radiusY))
+      StraightPathPoint.fromTranslation(Vec2D.fromValues(0.0, -radiusY)),
     ];
 
     double angle = -pi / 2.0;
@@ -39,8 +39,11 @@ class ActorStar extends ActorProceduralPath {
     Vec2D sy = Vec2D.fromValues(radiusY, radiusY * _innerRadius);
 
     for (int i = 0; i < sides; i++) {
-      _starPoints.add(StraightPathPoint.fromTranslation(
-          Vec2D.fromValues(cos(angle) * sx[i % 2], sin(angle) * sy[i % 2])));
+      _starPoints.add(
+        StraightPathPoint.fromTranslation(
+          Vec2D.fromValues(cos(angle) * sx[i % 2], sin(angle) * sy[i % 2]),
+        ),
+      );
       angle += inc;
     }
     return _starPoints;
@@ -55,6 +58,7 @@ class ActorStar extends ActorProceduralPath {
     _numPoints = node._numPoints;
     _innerRadius = node._innerRadius;
   }
+
   @override
   void invalidatePath() {}
   @override
@@ -63,8 +67,12 @@ class ActorStar extends ActorProceduralPath {
     instance.copyStar(this, resetArtboard);
     return instance;
   }
+
   static ActorStar read(
-      ActorArtboard artboard, StreamReader reader, ActorStar component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorStar component,
+  ) {
     ActorNode.read(artboard, reader, component);
 
     component.width = reader.readFloat32('width');

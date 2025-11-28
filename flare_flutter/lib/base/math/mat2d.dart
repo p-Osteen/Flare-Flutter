@@ -28,7 +28,7 @@ class Mat2D {
       _buffer[4],
       _buffer[5],
       0.0,
-      1.0
+      1.0,
     ]);
   }
 

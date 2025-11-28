@@ -83,5 +83,5 @@ const Map<String, int> propertyTypesMap = {
   'offsetX': PropertyTypes.offsetX,
   'offsetY': PropertyTypes.offsetY,
   'blurX': PropertyTypes.blurX,
-  'blurY': PropertyTypes.blurY
+  'blurY': PropertyTypes.blurY,
 };

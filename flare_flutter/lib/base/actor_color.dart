@@ -12,16 +12,24 @@ import 'package:flare_flutter/base/stream_reader.dart';
 
 final HashMap<int, FillRule> fillRuleLookup =
     HashMap<int, FillRule>.fromIterables(
-        [0, 1], [FillRule.evenOdd, FillRule.nonZero]);
+      [0, 1],
+      [FillRule.evenOdd, FillRule.nonZero],
+    );
 final HashMap<int, StrokeCap> strokeCapLookup =
     HashMap<int, StrokeCap>.fromIterables(
-        [0, 1, 2], [StrokeCap.butt, StrokeCap.round, StrokeCap.square]);
+      [0, 1, 2],
+      [StrokeCap.butt, StrokeCap.round, StrokeCap.square],
+    );
 final HashMap<int, StrokeJoin> strokeJoinLookup =
     HashMap<int, StrokeJoin>.fromIterables(
-        [0, 1, 2], [StrokeJoin.miter, StrokeJoin.round, StrokeJoin.bevel]);
+      [0, 1, 2],
+      [StrokeJoin.miter, StrokeJoin.round, StrokeJoin.bevel],
+    );
 final HashMap<int, TrimPath> trimPathLookup =
     HashMap<int, TrimPath>.fromIterables(
-        [0, 1, 2], [TrimPath.off, TrimPath.sequential, TrimPath.synced]);
+      [0, 1, 2],
+      [TrimPath.off, TrimPath.sequential, TrimPath.synced],
+    );
 
 abstract class ActorColor extends ActorPaint {
   Float32List _color = Float32List(4);
@@ -60,7 +68,10 @@ abstract class ActorColor extends ActorPaint {
   void update(int dirt) {}
 
   static ActorColor read(
-      ActorArtboard artboard, StreamReader reader, ActorColor component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorColor component,
+  ) {
     ActorPaint.read(artboard, reader, component);
 
     component._color = reader.readFloat32Array(4, 'color');
@@ -69,7 +80,7 @@ abstract class ActorColor extends ActorPaint {
   }
 }
 
-abstract class ActorFill {
+mixin ActorFill {
   FillRule _fillRule = FillRule.evenOdd;
   FillRule get fillRule => _fillRule;
 
@@ -80,7 +91,10 @@ abstract class ActorFill {
   void initializeGraphics();
 
   static void read(
-      ActorArtboard artboard, StreamReader reader, ActorFill component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorFill component,
+  ) {
     component._fillRule =
         fillRuleLookup[reader.readUint8('fillRule')] ?? FillRule.evenOdd;
   }
@@ -114,7 +128,10 @@ abstract class ActorPaint extends ActorComponent {
   }
 
   static ActorPaint read(
-      ActorArtboard artboard, StreamReader reader, ActorPaint component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorPaint component,
+  ) {
     ActorComponent.read(artboard, reader, component);
     component.opacity = reader.readFloat32('opacity');
 
@@ -122,7 +139,7 @@ abstract class ActorPaint extends ActorComponent {
   }
 }
 
-abstract class ActorStroke {
+mixin ActorStroke {
   double _width = 1.0;
   StrokeCap _cap = StrokeCap.butt;
   StrokeJoin _join = StrokeJoin.miter;
@@ -192,7 +209,10 @@ abstract class ActorStroke {
   void markPathEffectsDirty();
 
   static void read(
-      ActorArtboard artboard, StreamReader reader, ActorStroke component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorStroke component,
+  ) {
     component.width = reader.readFloat32('width');
     if (artboard.actor.version >= 19) {
       var capValue = strokeCapLookup[reader.readUint8('cap')];
@@ -233,7 +253,10 @@ abstract class ColorFill extends ActorColor with ActorFill {
   }
 
   static ColorFill read(
-      ActorArtboard artboard, StreamReader reader, ColorFill component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ColorFill component,
+  ) {
     ActorColor.read(artboard, reader, component);
     ActorFill.read(artboard, reader, component);
     return component;
@@ -257,7 +280,10 @@ abstract class ColorStroke extends ActorColor with ActorStroke {
   }
 
   static ColorStroke read(
-      ActorArtboard artboard, StreamReader reader, ColorStroke component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ColorStroke component,
+  ) {
     ActorColor.read(artboard, reader, component);
     ActorStroke.read(artboard, reader, component);
     return component;
@@ -308,7 +334,10 @@ abstract class GradientColor extends ActorPaint {
   }
 
   static GradientColor read(
-      ActorArtboard artboard, StreamReader reader, GradientColor component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    GradientColor component,
+  ) {
     ActorPaint.read(artboard, reader, component);
 
     int numStops = reader.readUint8('numColorStops');
@@ -339,7 +368,10 @@ abstract class GradientFill extends GradientColor with ActorFill {
   }
 
   static GradientFill read(
-      ActorArtboard artboard, StreamReader reader, GradientFill component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    GradientFill component,
+  ) {
     GradientColor.read(artboard, reader, component);
     component._fillRule =
         fillRuleLookup[reader.readUint8('fillRule')] ?? FillRule.evenOdd;
@@ -364,7 +396,10 @@ abstract class GradientStroke extends GradientColor with ActorStroke {
   }
 
   static GradientStroke read(
-      ActorArtboard artboard, StreamReader reader, GradientStroke component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    GradientStroke component,
+  ) {
     GradientColor.read(artboard, reader, component);
     ActorStroke.read(artboard, reader, component);
     return component;
@@ -375,13 +410,18 @@ abstract class RadialGradientColor extends GradientColor {
   double secondaryRadiusScale = 1.0;
 
   void copyRadialGradient(
-      RadialGradientColor node, ActorArtboard resetArtboard) {
+    RadialGradientColor node,
+    ActorArtboard resetArtboard,
+  ) {
     copyGradient(node, resetArtboard);
     secondaryRadiusScale = node.secondaryRadiusScale;
   }
 
-  static RadialGradientColor read(ActorArtboard artboard, StreamReader reader,
-      RadialGradientColor component) {
+  static RadialGradientColor read(
+    ActorArtboard artboard,
+    StreamReader reader,
+    RadialGradientColor component,
+  ) {
     GradientColor.read(artboard, reader, component);
 
     component.secondaryRadiusScale = reader.readFloat32('secondaryRadiusScale');
@@ -406,8 +446,11 @@ abstract class RadialGradientFill extends RadialGradientColor with ActorFill {
     copyFill(node, resetArtboard);
   }
 
-  static RadialGradientFill read(ActorArtboard artboard, StreamReader reader,
-      RadialGradientFill component) {
+  static RadialGradientFill read(
+    ActorArtboard artboard,
+    StreamReader reader,
+    RadialGradientFill component,
+  ) {
     RadialGradientColor.read(artboard, reader, component);
     ActorFill.read(artboard, reader, component);
 
@@ -428,13 +471,18 @@ abstract class RadialGradientStroke extends RadialGradientColor
   }
 
   void copyRadialStroke(
-      RadialGradientStroke node, ActorArtboard resetArtboard) {
+    RadialGradientStroke node,
+    ActorArtboard resetArtboard,
+  ) {
     copyRadialGradient(node, resetArtboard);
     copyStroke(node, resetArtboard);
   }
 
-  static RadialGradientStroke read(ActorArtboard artboard, StreamReader reader,
-      RadialGradientStroke component) {
+  static RadialGradientStroke read(
+    ActorArtboard artboard,
+    StreamReader reader,
+    RadialGradientStroke component,
+  ) {
     RadialGradientColor.read(artboard, reader, component);
     ActorStroke.read(artboard, reader, component);
     return component;

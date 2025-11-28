@@ -45,7 +45,10 @@ abstract class ActorComponent {
   void update(int dirt);
 
   static ActorComponent read(
-      ActorArtboard artboard, StreamReader reader, ActorComponent component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorComponent component,
+  ) {
     component.artboard = artboard;
     component._name = reader.readString('name');
     component._parentIdx = reader.readId('parent');

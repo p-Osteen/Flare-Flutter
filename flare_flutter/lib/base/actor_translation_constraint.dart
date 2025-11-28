@@ -40,8 +40,9 @@ class ActorTranslationConstraint extends ActorAxisConstraint {
       translationB[1] = transformB[5];
 
       if (!copyX) {
-        translationB[0] =
-            destSpace == TransformSpace.local ? 0.0 : translationA[0];
+        translationB[0] = destSpace == TransformSpace.local
+            ? 0.0
+            : translationA[0];
       } else {
         translationB[0] *= scaleX;
         if (offset) {
@@ -50,8 +51,9 @@ class ActorTranslationConstraint extends ActorAxisConstraint {
       }
 
       if (!copyY) {
-        translationB[1] =
-            destSpace == TransformSpace.local ? 0.0 : translationA[1];
+        translationB[1] = destSpace == TransformSpace.local
+            ? 0.0
+            : translationA[1];
       } else {
         translationB[1] *= scaleY;
         if (offset) {
@@ -62,7 +64,10 @@ class ActorTranslationConstraint extends ActorAxisConstraint {
       if (destSpace == TransformSpace.local) {
         if (grandParent != null) {
           Vec2D.transformMat2D(
-              translationB, translationB, grandParent.worldTransform);
+            translationB,
+            translationB,
+            grandParent.worldTransform,
+          );
         }
       }
     }
@@ -91,7 +96,10 @@ class ActorTranslationConstraint extends ActorAxisConstraint {
     if (clampLocal) {
       // Transform back to world.
       Vec2D.transformMat2D(
-          translationB, translationB, grandParent.worldTransform);
+        translationB,
+        translationB,
+        grandParent.worldTransform,
+      );
     }
 
     double ti = 1.0 - strength;
@@ -111,8 +119,11 @@ class ActorTranslationConstraint extends ActorAxisConstraint {
   @override
   void update(int dirt) {}
   // ignore: prefer_constructors_over_static_methods
-  static ActorTranslationConstraint read(ActorArtboard artboard,
-      StreamReader reader, ActorTranslationConstraint? component) {
+  static ActorTranslationConstraint read(
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorTranslationConstraint? component,
+  ) {
     // ignore: parameter_assignments
     component ??= ActorTranslationConstraint();
     ActorAxisConstraint.read(artboard, reader, component);

@@ -51,8 +51,9 @@ class ActorIKConstraint extends ActorTargetedConstraint {
     // Make sure bones are good.
     _boneData = <BoneChain>[];
     for (final InfluencedBone bone in _influencedBones!) {
-      BoneChain? item =
-          _fkChain.firstWhereOrNull((chainItem) => chainItem.bone == bone.bone);
+      BoneChain? item = _fkChain.firstWhereOrNull(
+        (chainItem) => chainItem.bone == bone.bone,
+      );
       if (item == null) {
         print('Bone not in chain: ' + bone.bone.name);
         continue;
@@ -92,8 +93,9 @@ class ActorIKConstraint extends ActorTargetedConstraint {
 
       ActorBone bone = fk.bone;
       for (final node in bone.children!) {
-        BoneChain? item =
-            _fkChain.firstWhereOrNull((chainItem) => chainItem.bone == node);
+        BoneChain? item = _fkChain.firstWhereOrNull(
+          (chainItem) => chainItem.bone == node,
+        );
         if (item != null) {
           // node is in the FK chain.
           continue;
@@ -122,7 +124,10 @@ class ActorIKConstraint extends ActorTargetedConstraint {
       Mat2D parentWorld = bone.parent!.worldTransform;
       Mat2D.invert(item.parentWorldInverse, parentWorld);
       Mat2D.multiply(
-          bone.transform, item.parentWorldInverse, bone.worldTransform);
+        bone.transform,
+        item.parentWorldInverse,
+        bone.worldTransform,
+      );
       Mat2D.decompose(bone.transform, item.transformComponents);
     }
 
@@ -149,7 +154,10 @@ class ActorIKConstraint extends ActorTargetedConstraint {
         if (!fk.included) {
           ActorBone bone = fk.bone;
           Mat2D.multiply(
-              bone.worldTransform, bone.parent!.worldTransform, bone.transform);
+            bone.worldTransform,
+            bone.parent!.worldTransform,
+            bone.transform,
+          );
           continue;
         }
         double fromAngle = fk.transformComponents.rotation % pi2;
@@ -204,8 +212,9 @@ class ActorIKConstraint extends ActorTargetedConstraint {
     if (node._influencedBones != null) {
       _influencedBones = <InfluencedBone>[];
       for (int i = 0; i < _influencedBones!.length; i++) {
-        _influencedBones!
-            .add(InfluencedBone(node._influencedBones![i].boneIdx));
+        _influencedBones!.add(
+          InfluencedBone(node._influencedBones![i].boneIdx),
+        );
       }
     }
   }
@@ -290,8 +299,11 @@ class ActorIKConstraint extends ActorTargetedConstraint {
       pB = b2.getTipWorldTranslation(Vec2D());
 
       Vec2D avec = Vec2D.subtract(Vec2D(), pB, pC);
-      Vec2D avLocal =
-          Vec2D.transformMat2(Vec2D(), avec, secondChildWorldInverse);
+      Vec2D avLocal = Vec2D.transformMat2(
+        Vec2D(),
+        avec,
+        secondChildWorldInverse,
+      );
       double angleCorrection = -atan2(avLocal[1], avLocal[0]);
 
       if (_invertDirection) {
@@ -314,7 +326,10 @@ class ActorIKConstraint extends ActorTargetedConstraint {
     if (firstChild != fk2) {
       ActorBone bone = fk2.bone;
       Mat2D.multiply(
-          bone.worldTransform, bone.parent!.worldTransform, bone.transform);
+        bone.worldTransform,
+        bone.parent!.worldTransform,
+        bone.transform,
+      );
     }
 
     // Simple storage, need this for interpolation.
@@ -326,8 +341,11 @@ class ActorIKConstraint extends ActorTargetedConstraint {
   void update(int dirt) {}
 
   // ignore: prefer_constructors_over_static_methods
-  static ActorIKConstraint read(ActorArtboard artboard, StreamReader reader,
-      ActorIKConstraint? component) {
+  static ActorIKConstraint read(
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorIKConstraint? component,
+  ) {
     // ignore: parameter_assignments
     component ??= ActorIKConstraint();
     ActorTargetedConstraint.read(artboard, reader, component);

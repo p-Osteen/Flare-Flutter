@@ -6,9 +6,7 @@ class BlockReader extends BinaryReader {
   @override
   int blockType;
 
-  BlockReader(ByteData data)
-      : blockType = 0,
-        super(data);
+  BlockReader(ByteData data) : blockType = 0, super(data);
   BlockReader.fromBlock(this.blockType, ByteData stream) : super(stream);
 
   // A block is defined as a TLV with type of one byte, length of 4 bytes,

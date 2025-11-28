@@ -1,8 +1,5 @@
 import 'dart:math';
 
-import 'package:flare_flutter/base/animation/actor_animation.dart';
-import 'package:flare_flutter/base/math/mat2d.dart';
-
 import 'flare.dart';
 import 'flare_actor.dart';
 import 'flare_controller.dart';
@@ -40,9 +37,11 @@ class FlareControls extends FlareController {
     if (_artboard != null) {
       var animation = _artboard!.getAnimation(_animationName);
       if (animation != null) {
-        _animationLayers.add(FlareAnimationLayer(_animationName, animation)
-          ..mix = mix
-          ..mixSeconds = mixSeconds);
+        _animationLayers.add(
+          FlareAnimationLayer(_animationName, animation)
+            ..mix = mix
+            ..mixSeconds = mixSeconds,
+        );
         isActive.value = true;
       }
     }

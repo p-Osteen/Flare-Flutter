@@ -18,22 +18,34 @@ class ActorEllipse extends ActorProceduralPath {
   @override
   List<PathPoint> get points {
     List<PathPoint> _ellipsePathPoints = <PathPoint>[];
-    _ellipsePathPoints.add(CubicPathPoint.fromValues(
+    _ellipsePathPoints.add(
+      CubicPathPoint.fromValues(
         Vec2D.fromValues(0.0, -radiusY),
         Vec2D.fromValues(-radiusX * circleConstant, -radiusY),
-        Vec2D.fromValues(radiusX * circleConstant, -radiusY)));
-    _ellipsePathPoints.add(CubicPathPoint.fromValues(
+        Vec2D.fromValues(radiusX * circleConstant, -radiusY),
+      ),
+    );
+    _ellipsePathPoints.add(
+      CubicPathPoint.fromValues(
         Vec2D.fromValues(radiusX, 0.0),
         Vec2D.fromValues(radiusX, circleConstant * -radiusY),
-        Vec2D.fromValues(radiusX, circleConstant * radiusY)));
-    _ellipsePathPoints.add(CubicPathPoint.fromValues(
+        Vec2D.fromValues(radiusX, circleConstant * radiusY),
+      ),
+    );
+    _ellipsePathPoints.add(
+      CubicPathPoint.fromValues(
         Vec2D.fromValues(0.0, radiusY),
         Vec2D.fromValues(radiusX * circleConstant, radiusY),
-        Vec2D.fromValues(-radiusX * circleConstant, radiusY)));
-    _ellipsePathPoints.add(CubicPathPoint.fromValues(
+        Vec2D.fromValues(-radiusX * circleConstant, radiusY),
+      ),
+    );
+    _ellipsePathPoints.add(
+      CubicPathPoint.fromValues(
         Vec2D.fromValues(-radiusX, 0.0),
         Vec2D.fromValues(-radiusX, radiusY * circleConstant),
-        Vec2D.fromValues(-radiusX, -radiusY * circleConstant)));
+        Vec2D.fromValues(-radiusX, -radiusY * circleConstant),
+      ),
+    );
 
     return _ellipsePathPoints;
   }
@@ -51,8 +63,12 @@ class ActorEllipse extends ActorProceduralPath {
     instance.copyPath(this, resetArtboard);
     return instance;
   }
+
   static ActorEllipse read(
-      ActorArtboard artboard, StreamReader reader, ActorEllipse component) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorEllipse component,
+  ) {
     ActorNode.read(artboard, reader, component);
 
     component.width = reader.readFloat32('width');

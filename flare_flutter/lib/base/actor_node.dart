@@ -16,8 +16,8 @@ class ActorClip {
 
   ActorClip(this.clipIdx);
   ActorClip.copy(ActorClip from)
-      : clipIdx = from.clipIdx,
-        intersect = from.intersect;
+    : clipIdx = from.clipIdx,
+      intersect = from.intersect;
 }
 
 class ActorNode extends ActorComponent {
@@ -64,8 +64,8 @@ class ActorNode extends ActorComponent {
       (_constraints == null
           ? _peerConstraints
           : _peerConstraints == null
-              ? _constraints
-              : _constraints! + _peerConstraints!) ??
+          ? _constraints
+          : _constraints! + _peerConstraints!) ??
       <ActorConstraint>[];
 
   double get childOpacity {
@@ -397,12 +397,17 @@ class ActorNode extends ActorComponent {
 
   // ignore: prefer_constructors_over_static_methods
   static ActorNode read(
-      ActorArtboard artboard, StreamReader reader, ActorNode? node) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorNode? node,
+  ) {
     // ignore: parameter_assignments
     node ??= ActorNode();
     ActorComponent.read(artboard, reader, node);
     Vec2D.copyFromList(
-        node._translation, reader.readFloat32Array(2, 'translation'));
+      node._translation,
+      reader.readFloat32Array(2, 'translation'),
+    );
     node._rotation = reader.readFloat32('rotation');
     Vec2D.copyFromList(node._scale, reader.readFloat32Array(2, 'scale'));
     node._opacity = reader.readFloat32('opacity');

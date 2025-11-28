@@ -113,8 +113,12 @@ class ActorImage extends ActorDrawable with ActorSkinnable {
   AABB computeAABB() {
     // Todo: implement for image.
     Mat2D worldTransform = this.worldTransform;
-    return AABB.fromValues(worldTransform[4], worldTransform[5],
-        worldTransform[4], worldTransform[5]);
+    return AABB.fromValues(
+      worldTransform[4],
+      worldTransform[5],
+      worldTransform[4],
+      worldTransform[5],
+    );
   }
 
   void copyImage(ActorImage node, ActorArtboard resetArtboard) {
@@ -128,8 +132,9 @@ class ActorImage extends ActorDrawable with ActorSkinnable {
     _triangles = node._triangles;
     _dynamicUV = node._dynamicUV;
     if (node._animationDeformedVertices != null) {
-      _animationDeformedVertices =
-          Float32List.fromList(node._animationDeformedVertices!);
+      _animationDeformedVertices = Float32List.fromList(
+        node._animationDeformedVertices!,
+      );
     }
   }
 
@@ -188,7 +193,9 @@ class ActorImage extends ActorDrawable with ActorSkinnable {
   }
 
   void updateVertexPositionBuffer(
-      Float32List buffer, bool isSkinnedDeformInWorld) {
+    Float32List buffer,
+    bool isSkinnedDeformInWorld,
+  ) {
     Mat2D worldTransform = this.worldTransform;
     int readIdx = 0;
     int writeIdx = 0;
@@ -202,8 +209,14 @@ class ActorImage extends ActorDrawable with ActorSkinnable {
       Float32List? boneTransforms = skin!.boneMatrices;
 
       //Mat2D inverseWorldTransform = Mat2D.Invert(new Mat2D(), worldTransform);
-      Float32List influenceMatrix =
-          Float32List.fromList([0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
+      Float32List influenceMatrix = Float32List.fromList([
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+      ]);
 
       // if(this.name == "evolution_1_0001s_0003_evolution_1_weapo")
       // {
@@ -264,10 +277,12 @@ class ActorImage extends ActorDrawable with ActorSkinnable {
           }
         }
 
-        x = influenceMatrix[0] * px +
+        x =
+            influenceMatrix[0] * px +
             influenceMatrix[2] * py +
             influenceMatrix[4];
-        y = influenceMatrix[1] * px +
+        y =
+            influenceMatrix[1] * px +
             influenceMatrix[3] * py +
             influenceMatrix[5];
 
@@ -301,7 +316,10 @@ class ActorImage extends ActorDrawable with ActorSkinnable {
   }
 
   static ActorImage read(
-      ActorArtboard artboard, StreamReader reader, ActorImage node) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorImage node,
+  ) {
     ActorDrawable.read(artboard, reader, node);
     ActorSkinnable.read(artboard, reader, node);
 
@@ -311,8 +329,10 @@ class ActorImage extends ActorDrawable with ActorSkinnable {
       int numVertices = reader.readUint32('numVertices');
 
       node._vertexCount = numVertices;
-      node._vertices =
-          reader.readFloat32Array(numVertices * node.vertexStride, 'vertices');
+      node._vertices = reader.readFloat32Array(
+        numVertices * node.vertexStride,
+        'vertices',
+      );
 
       // In version 24 we started packing the original UV coordinates if the
       // image was marked for dynamic runtime swapping.

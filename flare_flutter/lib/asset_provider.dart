@@ -1,9 +1,9 @@
+// ignore_for_file: unnecessary_abstract_class, one_member_abstracts
+
 import 'dart:typed_data';
 
-/// Identifies an asset, to obtain asset from an [AssetProvider], call [load].
 abstract class AssetProvider {
   const AssetProvider();
 
-  /// Loads the asset.
   Future<ByteData> load();
 }

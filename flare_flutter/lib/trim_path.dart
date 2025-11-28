@@ -1,7 +1,12 @@
 import 'dart:ui';
 
-Path trimPath(Path path, double startT, double stopT, bool complement,
-    bool isSequential) {
+Path trimPath(
+  Path path,
+  double startT,
+  double stopT,
+  bool complement,
+  bool isSequential,
+) {
   if (isSequential) {
     return _trimPathSequential(path, startT, stopT, complement);
   } else {
@@ -9,8 +14,13 @@ Path trimPath(Path path, double startT, double stopT, bool complement,
   }
 }
 
-double _appendPathSegmentSequential(Iterator<PathMetric> metricsIterator,
-    Path to, double offset, double start, double stop) {
+double _appendPathSegmentSequential(
+  Iterator<PathMetric> metricsIterator,
+  Path to,
+  double offset,
+  double start,
+  double stop,
+) {
   double nextOffset = offset;
   do {
     PathMetric metric = metricsIterator.current;
@@ -31,7 +41,12 @@ double _appendPathSegmentSequential(Iterator<PathMetric> metricsIterator,
 }
 
 void _appendPathSegmentSync(
-    PathMetric metric, Path to, double offset, double start, double stop) {
+  PathMetric metric,
+  Path to,
+  double offset,
+  double start,
+  double stop,
+) {
   double nextOffset = offset + metric.length;
   if (start < nextOffset) {
     Path extracted = metric.extractPath(start - offset, stop - offset);
@@ -40,7 +55,11 @@ void _appendPathSegmentSync(
 }
 
 Path _trimPathSequential(
-    Path path, double startT, double stopT, bool complement) {
+  Path path,
+  double startT,
+  double stopT,
+  bool complement,
+) {
   final Path result = Path();
 
   // Measure length of all the contours.
@@ -61,16 +80,31 @@ Path _trimPathSequential(
   if (complement) {
     if (trimStart > 0.0) {
       offset = _appendPathSegmentSequential(
-          metricsIterator, result, offset, 0.0, trimStart);
+        metricsIterator,
+        result,
+        offset,
+        0.0,
+        trimStart,
+      );
     }
     if (trimStop < totalLength) {
       offset = _appendPathSegmentSequential(
-          metricsIterator, result, offset, trimStop, totalLength);
+        metricsIterator,
+        result,
+        offset,
+        trimStop,
+        totalLength,
+      );
     }
   } else {
     if (trimStart < trimStop) {
       offset = _appendPathSegmentSequential(
-          metricsIterator, result, offset, trimStart, trimStop);
+        metricsIterator,
+        result,
+        offset,
+        trimStart,
+        trimStop,
+      );
     }
   }
 

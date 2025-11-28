@@ -35,7 +35,10 @@ class ActorBone extends ActorBoneBase {
 
   // ignore: prefer_constructors_over_static_methods
   static ActorBone read(
-      ActorArtboard artboard, StreamReader reader, ActorBone? node) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorBone? node,
+  ) {
     // ignore: parameter_assignments
     node ??= ActorBone();
     ActorBoneBase.read(artboard, reader, node);

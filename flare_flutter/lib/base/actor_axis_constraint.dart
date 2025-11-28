@@ -25,8 +25,11 @@ abstract class ActorAxisConstraint extends ActorTargetedConstraint {
 
   ActorAxisConstraint() : super();
 
-  static ActorAxisConstraint read(ActorArtboard artboard, StreamReader reader,
-      ActorAxisConstraint component) {
+  static ActorAxisConstraint read(
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorAxisConstraint component,
+  ) {
     ActorTargetedConstraint.read(artboard, reader, component);
     component._copyX = reader.readBool('copyX');
     if (component._copyX) {
@@ -67,7 +70,9 @@ abstract class ActorAxisConstraint extends ActorTargetedConstraint {
   }
 
   void copyAxisConstraint(
-      ActorAxisConstraint node, ActorArtboard resetArtboard) {
+    ActorAxisConstraint node,
+    ActorArtboard resetArtboard,
+  ) {
     copyTargetedConstraint(node, resetArtboard);
 
     _copyX = node._copyX;

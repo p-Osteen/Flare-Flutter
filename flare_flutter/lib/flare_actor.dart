@@ -3,10 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flare_flutter/asset_provider.dart';
 import 'package:flare_flutter/base/actor_drawable.dart';
-import 'package:flare_flutter/base/actor_node.dart';
-import 'package:flare_flutter/base/animation/actor_animation.dart';
 import 'package:flare_flutter/base/math/aabb.dart';
-import 'package:flare_flutter/base/math/mat2d.dart';
 import 'package:flare_flutter/flare.dart';
 import 'package:flare_flutter/flare_controller.dart';
 import 'package:flare_flutter/flare_render_box.dart';
@@ -128,8 +125,8 @@ class FlareActor extends LeafRenderObjectWidget {
     this.artboard,
     this.antialias = true,
     AssetBundle? bundle,
-  })  : filename = null,
-        flareProvider = AssetFlare(bundle: bundle ?? rootBundle, name: name);
+  }) : filename = null,
+       flareProvider = AssetFlare(bundle: bundle ?? rootBundle, name: name);
 
   FlareActor.memory(
     Uint8List bytes, {
@@ -146,8 +143,8 @@ class FlareActor extends LeafRenderObjectWidget {
     this.sizeFromArtboard = false,
     this.artboard,
     this.antialias = true,
-  })  : filename = null,
-        flareProvider = MemoryFlare(bytes: bytes);
+  }) : filename = null,
+       flareProvider = MemoryFlare(bytes: bytes);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
@@ -176,7 +173,9 @@ class FlareActor extends LeafRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, covariant FlareActorRenderObject renderObject) {
+    BuildContext context,
+    covariant FlareActorRenderObject renderObject,
+  ) {
     renderObject
       ..assetProvider =
           flareProvider ?? AssetFlare(bundle: rootBundle, name: filename!)
@@ -269,12 +268,7 @@ class FlareActorRenderObject extends FlareRenderBox {
       if (_actor != null) {
         _artboard.overrideColor = value == null
             ? null
-            : Float32List.fromList([
-                value.red / 255.0,
-                value.green / 255.0,
-                value.blue / 255.0,
-                value.opacity
-              ]);
+            : Float32List.fromList([value.r, value.g, value.b, value.a]);
       }
       markNeedsPaint();
     }
@@ -465,12 +459,7 @@ class FlareActorRenderObject extends FlareRenderBox {
     intrinsicSize = Size(artboard.width, artboard.height);
     _artboard.overrideColor = _color == null
         ? null
-        : Float32List.fromList([
-            _color!.red / 255.0,
-            _color!.green / 255.0,
-            _color!.blue / 255.0,
-            _color!.opacity
-          ]);
+        : Float32List.fromList([_color!.r, _color!.g, _color!.b, _color!.a]);
     _artboard.antialias = _useAntialias;
     _controller?.initialize(_artboard);
     _animationLayers.clear();
@@ -491,9 +480,11 @@ class FlareActorRenderObject extends FlareRenderBox {
     if (_animationName != null && _actor != null) {
       var animation = _artboard.getAnimation(_animationName!);
       if (animation != null) {
-        _animationLayers.add(FlareAnimationLayer(_animationName!, animation)
-          ..mix = 1.0
-          ..mixSeconds = 0.2);
+        _animationLayers.add(
+          FlareAnimationLayer(_animationName!, animation)
+            ..mix = 1.0
+            ..mixSeconds = 0.2,
+        );
         animation.apply(0.0, _artboard, 1.0);
         _artboard.advance(0.0);
         updatePlayState();

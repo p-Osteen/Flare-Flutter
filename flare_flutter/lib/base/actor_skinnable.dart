@@ -5,7 +5,7 @@ import 'package:flare_flutter/base/actor_skin.dart';
 import 'package:flare_flutter/base/math/mat2d.dart';
 import 'package:flare_flutter/base/stream_reader.dart';
 
-abstract class ActorSkinnable {
+mixin ActorSkinnable {
   ActorSkin? skin;
   List<SkinnedBone>? _connectedBones;
   List<SkinnedBone>? get connectedBones => _connectedBones;
@@ -41,7 +41,10 @@ abstract class ActorSkinnable {
   }
 
   static ActorSkinnable read(
-      ActorArtboard artboard, StreamReader reader, ActorSkinnable node) {
+    ActorArtboard artboard,
+    StreamReader reader,
+    ActorSkinnable node,
+  ) {
     reader.openArray('bones');
     int numConnectedBones = reader.readUint8Length();
     if (numConnectedBones != 0) {
@@ -58,7 +61,9 @@ abstract class ActorSkinnable {
       reader.closeArray();
       Mat2D worldOverride = Mat2D();
       Mat2D.copyFromList(
-          worldOverride, reader.readFloat32Array(6, 'worldTransform'));
+        worldOverride,
+        reader.readFloat32Array(6, 'worldTransform'),
+      );
       node.worldTransformOverride = worldOverride;
     } else {
       reader.closeArray();
